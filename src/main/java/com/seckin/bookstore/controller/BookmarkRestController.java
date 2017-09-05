@@ -34,12 +34,12 @@ public class BookmarkRestController {
     @RequestMapping(method = RequestMethod.POST)
     ResponseEntity<?> add(@PathVariable String userId, @RequestBody Bookmark bookmark) {
         this.validateUser(userId);
-
         return this.accountRepository.findByUsername(userId).map(account -> {
             Bookmark result = bookmarkRepository.save(new Bookmark(account, bookmark.uri, bookmark.description));
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId()).toUri();
             return ResponseEntity.created(location).build();
         }).orElse(ResponseEntity.noContent().build());
+
 
     }
 
